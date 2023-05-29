@@ -161,13 +161,23 @@ Apps will default to being associated with the default `bridge` network or a net
 
 ```shell
 # associates the network after a container is created but before it is started
+# commonly used for cross-app networking
 dokku network:set node-js-app attach-post-create test-network
 
 # associates the network after the deploy is successful but before the proxy is updated
+# used for cross-app networking when healthchecks must be invoked first
 dokku network:set node-js-app attach-post-deploy other-test-network
 
 # associates the network at container creation
+# typically blocks access to services and external routing
 dokku network:set node-js-app initial-network global-network
+```
+
+Multiple networks can also be specified for the `attach-post-create` and `attach-post-deploy` phases.
+
+```shell
+# one or more networks can be specified
+dokku network:set node-js-app attach-post-create test-network test-network-2
 ```
 
 Setting the `attach` network property to an empty value will de-associate the container with the network.
